@@ -1,9 +1,11 @@
-package perceptron
+package main
 
 
 type Label float64
+const positiveClass Label = 1
+const negativeClass Label = -1
 
-type ActivationFunction func(float64) float64
+type ActivationFunction func(float64) Label
 
 type Perceptron struct {
 	Weights []float64
@@ -21,11 +23,11 @@ func NewPerceptron (inputSize int) Perceptron {
 	}
 }
 
-func sign(n float64) float64 {
+func sign(n float64) Label {
 	if n < 0 {
-		return -1
+		return negativeClass
 	}
-	return 1
+	return positiveClass
 }
 
 type Datum struct {
@@ -65,6 +67,7 @@ func (p *Perceptron) adjustWeights(datum LabeledDatum) []float64 {
 }
 
 
+// https://en.wikipedia.org/wiki/Axon_hillock
 func (p *Perceptron) Predict(data Datum) Label {
 	var sum float64
 	for i, feature := range data.Features {
@@ -73,5 +76,5 @@ func (p *Perceptron) Predict(data Datum) Label {
 	// Weights has an extra element than Features. It's the bias
 	sum += p.Weights[len(data.Features)]
 
-	return Label(p.Activate(sum))
+	return p.Activate(sum)
 }

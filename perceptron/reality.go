@@ -1,4 +1,4 @@
-package perceptron
+package main
 
 import "math/rand"
 
@@ -28,7 +28,7 @@ func isAboveLine(point Datum, f func(float64) float64) Label {
 	x := point.Features[0]
 	y := point.Features[1]
 	if y > f(x) {
-		return Label(1)
+		return positiveClass
 	}
-	return Label(-1)
+	return negativeClass
 }
